@@ -1,4 +1,6 @@
 import java.util.Scanner;
+//Run the code and you will be prompted to
+
 
 public class FavouriteTimes {
     public static void main(String args[]){
