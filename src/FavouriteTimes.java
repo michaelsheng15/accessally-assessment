@@ -1,6 +1,5 @@
 import java.util.Scanner;
-//Run the code and you will be prompted to
-
+//Run the code and you will be prompted to enter the duration
 
 public class FavouriteTimes {
     public static void main(String args[]){
@@ -21,14 +20,17 @@ public class FavouriteTimes {
                     hour = hour % 12;
                 }
             }
+            //converts type to int
             String formattedMinute = "";
             if (minute < 10) {
-                //add leading zeros
+                //add leading zeros for minutes less than 10
                 formattedMinute = String.format("%02d", minute);
             } else {
                 formattedMinute = Integer.toString(minute);
             }
             String formattedHour = Integer.toString(hour);
+
+            //passes time to checkSequence function and if true, increment count
             if(checkSequence(formattedHour, formattedMinute)){
                 count++;
             };

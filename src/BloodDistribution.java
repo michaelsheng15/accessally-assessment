@@ -1,29 +1,30 @@
 import java.util.HashMap;
 import java.util.Scanner;
 
+//Please sun the code and when prompted, please enter entire row of input in 1 single line separated by spaces
+//Michael Sheng - AccessAlly Assessment
+
 public class BloodDistribution {
 
     public static void main(String args[]) {
         String[] bloodTypes = {"O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+"};
-
         Scanner input = new Scanner(System.in);
 
-        System.out.print("Enter values of units of blood available:");
+        System.out.println("Enter values of units of blood available (Please enter values all in 1 single line separated by spaces):");
         HashMap<String, Integer> availableBlood = new HashMap<>();
         for(int i = 0; i < bloodTypes.length; i++){
             availableBlood.put(bloodTypes[i], input.nextInt());
         }
-        System.out.println(availableBlood);
 
-        System.out.print("Enter number of patients:");
+        System.out.println("Enter number of patients (Please enter values all in 1 single line separated by spaces):");
         HashMap<String, Integer> numberOfPatients = new HashMap<>();
         for(int i = 0; i < bloodTypes.length; i++){
             numberOfPatients.put(bloodTypes[i], input.nextInt());
         }
-        System.out.println(numberOfPatients);
 
         int receivedBlood = 0;
 
+        //function calls in order O -> A -> B -> AB with negative RH check first
         receivedBlood = checkONegative(availableBlood, numberOfPatients, "O-");
         receivedBlood += checkOPositive(availableBlood, numberOfPatients, "O+");
         receivedBlood += checkANegative(availableBlood, numberOfPatients, "A-");
@@ -41,16 +42,18 @@ public class BloodDistribution {
 
         int receivedBlood;
         if(totalONegBlood > totalPatients){
+            //more blood then patients so all patients can receive blood
             receivedBlood = totalPatients; //amount of patients who received blood;
             totalONegBlood -= totalPatients; //update amount of O- blood left
 
             availableBlood.put("O-", totalONegBlood);
             numberOfPatients.put(patientType, 0);
         }else{
-            //totalOPatients > totalONegBlood
+            //more patients then blood so we find the difference
             receivedBlood = totalONegBlood;
             totalPatients -= totalONegBlood;
 
+            //update values on hashmap
             availableBlood.put("O-", 0);
             numberOfPatients.put(patientType, totalPatients);
         }
@@ -62,8 +65,8 @@ public class BloodDistribution {
         int totalOPosBlood = availableBlood.get("O+");
         int receivedBlood;
         if(totalOPosBlood > totalPatients){
-            receivedBlood = totalPatients; //amount of patients who received blood;
-            totalOPosBlood -= totalPatients; //update amount of O- blood left
+            receivedBlood = totalPatients;
+            totalOPosBlood -= totalPatients;
             availableBlood.put("O+", totalOPosBlood);
             numberOfPatients.put(patientType, 0);
         }else{
@@ -71,6 +74,8 @@ public class BloodDistribution {
             totalPatients -= totalOPosBlood;
             availableBlood.put("O+", 0);
             numberOfPatients.put(patientType, totalPatients);
+
+            //can take O- and O+
             receivedBlood += checkONegative(availableBlood, numberOfPatients, "O+");
         }
         return receivedBlood;
@@ -81,8 +86,8 @@ public class BloodDistribution {
         int totalANegBlood = availableBlood.get("A-");
         int receivedBlood;
         if(totalANegBlood > totalPatients){
-            receivedBlood = totalPatients; //amount of patients who received blood;
-            totalANegBlood -= totalPatients; //update amount of O- blood left
+            receivedBlood = totalPatients;
+            totalANegBlood -= totalPatients;
             availableBlood.put(patientType, totalANegBlood);
             numberOfPatients.put(patientType, 0);
         }else{
@@ -90,6 +95,8 @@ public class BloodDistribution {
             totalPatients -= totalANegBlood;
             availableBlood.put("A-", 0);
             numberOfPatients.put(patientType, totalPatients);
+
+            //can take O-
             receivedBlood += checkONegative(availableBlood, numberOfPatients, "A-");
         }
         return receivedBlood;
@@ -101,8 +108,8 @@ public class BloodDistribution {
 
         int receivedBlood;
         if(totalAPosBlood > totalPatients){
-            receivedBlood = totalPatients; //amount of patients who received blood;
-            totalAPosBlood -= totalPatients; //update amount of O- blood left
+            receivedBlood = totalPatients;
+            totalAPosBlood -= totalPatients;
             availableBlood.put("A+", totalAPosBlood);
             numberOfPatients.put("A+", 0);
         }else{
@@ -111,6 +118,7 @@ public class BloodDistribution {
             availableBlood.put("A+", 0);
             numberOfPatients.put("A+", totalPatients);
 
+            //can take O-, O+ and A-
             receivedBlood += checkONegative(availableBlood, numberOfPatients, "A+");
             receivedBlood += checkOPositive(availableBlood, numberOfPatients, "A+");
             receivedBlood += checkANegative(availableBlood, numberOfPatients, "A+");
@@ -123,8 +131,8 @@ public class BloodDistribution {
         int totalBNegBlood = availableBlood.get("B-");
         int receivedBlood;
         if(totalBNegBlood > totalPatients){
-            receivedBlood = totalPatients; //amount of patients who received blood;
-            totalBNegBlood -= totalPatients; //update amount of O- blood left
+            receivedBlood = totalPatients;
+            totalBNegBlood -= totalPatients;
             availableBlood.put(patientType, totalBNegBlood);
             numberOfPatients.put(patientType, 0);
         }else{
@@ -132,6 +140,8 @@ public class BloodDistribution {
             totalPatients -= totalBNegBlood;
             availableBlood.put("B-", 0);
             numberOfPatients.put(patientType, totalPatients);
+
+            //can take B- also
             receivedBlood += checkONegative(availableBlood, numberOfPatients, "B-");
         }
         return receivedBlood;
@@ -143,8 +153,8 @@ public class BloodDistribution {
 
         int receivedBlood;
         if(totalBPosBlood > totalPatients){
-            receivedBlood = totalPatients; //amount of patients who received blood;
-            totalBPosBlood -= totalPatients; //update amount of O- blood left
+            receivedBlood = totalPatients;
+            totalBPosBlood -= totalPatients;
             availableBlood.put("B+", totalBPosBlood);
             numberOfPatients.put("B+", 0);
         }else{
@@ -152,6 +162,8 @@ public class BloodDistribution {
             totalPatients -= totalBPosBlood;
             availableBlood.put("B+", 0);
             numberOfPatients.put("B+", totalPatients);
+
+            //can take O-, O+, B-
             receivedBlood += checkONegative(availableBlood, numberOfPatients, "B+");
             receivedBlood += checkOPositive(availableBlood, numberOfPatients, "B+");
             receivedBlood += checkBNegative(availableBlood, numberOfPatients, "B+");
@@ -164,8 +176,8 @@ public class BloodDistribution {
         int totalABNegBlood = availableBlood.get("AB-");
         int receivedBlood;
         if(totalABNegBlood > totalPatients){
-            receivedBlood = totalPatients; //amount of patients who received blood;
-            totalABNegBlood -= totalPatients; //update amount of O- blood left
+            receivedBlood = totalPatients;
+            totalABNegBlood -= totalPatients;
             availableBlood.put(patientType, totalABNegBlood);
             numberOfPatients.put(patientType, 0);
         }else{
@@ -173,6 +185,8 @@ public class BloodDistribution {
             totalPatients -= totalABNegBlood;
             availableBlood.put("AB-", 0);
             numberOfPatients.put(patientType, totalPatients);
+
+            //can take any negative blood
             receivedBlood += checkONegative(availableBlood, numberOfPatients, "AB-");
             receivedBlood += checkANegative(availableBlood, numberOfPatients, "AB-");
             receivedBlood += checkBNegative(availableBlood, numberOfPatients, "AB-");
@@ -186,8 +200,8 @@ public class BloodDistribution {
 
         int receivedBlood;
         if(totalABPosBlood > totalPatients){
-            receivedBlood = totalPatients; //amount of patients who received blood;
-            totalABPosBlood -= totalPatients; //update amount of O- blood left
+            receivedBlood = totalPatients;
+            totalABPosBlood -= totalPatients;
             availableBlood.put("AB+", totalABPosBlood);
             numberOfPatients.put("AB+", 0);
         }else{
@@ -196,6 +210,7 @@ public class BloodDistribution {
             availableBlood.put("AB+", 0);
             numberOfPatients.put("AB+", totalPatients);
 
+            //can take any blood type
             receivedBlood += checkONegative(availableBlood, numberOfPatients, "AB+");
             receivedBlood += checkOPositive(availableBlood, numberOfPatients, "AB+");
             receivedBlood += checkANegative(availableBlood, numberOfPatients, "AB+");
